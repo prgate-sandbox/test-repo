@@ -1,0 +1,29 @@
+name: sometimes-a
+
+on:
+  pull_request:
+    paths:
+      - ".github/actions/**"
+      - ".github/workflows/sometimes.yml"
+      - "data/a/*"
+  push:
+    branches: [main]
+    paths:
+      - ".github/actions/**"
+      - ".github/workflows/sometimes.yml"
+      - "data/a/*"
+
+jobs:
+  sometimes:
+    runs-on: ubuntu-24.04
+    # Try to prevent eating up tons of minutes.
+    timeout-minutes: 2
+
+    steps:
+      - name: Record start time
+        id: start-time
+        run: echo "start_time=$(date --utc +%FT%TZ)" | tee -a $GITHUB_OUTPUT
+
+      - name: Do work
+        # Lies...
+        run: sleep 15
